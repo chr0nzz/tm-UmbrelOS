@@ -99,12 +99,7 @@ Problems or questions: open an issue on the [Traefik Manager tracker](https://gi
 
 ## Versions
 
-| App | Traefik Manager | Traefik |
-|---|---|---|
-| Traefik Manager | 1.14.2 | 3.7.13 |
-| Traefik Manager Agent | 1.14.2 | 3.7.13 |
-
-Every image is pinned by digest.
+Both apps use the `latest` Traefik Manager, agent and Traefik images. umbrelOS pulls images when an app is installed or updated, so an install picks up the newest release at that time.
 
 ## License
 
