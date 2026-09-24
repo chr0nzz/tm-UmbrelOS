@@ -1,0 +1,52 @@
+manifestVersion: "2.0.0"
+id: tm-traefik-manager-agent
+name: Traefik Manager Agent
+tagline: Let a Traefik Manager on another machine manage a Traefik on your Umbrel
+icon: https://raw.githubusercontent.com/chr0nzz/tm-UmbrelOS/main/icon.png
+category: networking
+version: "1.14.2"
+port: 4490
+description: >-
+  ⚠️ This app has no web interface of its own and does nothing until you connect it to a Traefik Manager running on another machine. It also needs extra setup outside umbrelOS. Read the required setup below before installing.
+
+
+  This app installs Traefik together with the Traefik Manager agent, so the Traefik Manager you already run elsewhere can manage this Traefik: routes, middlewares, certificates and its static config. If you want Traefik Manager itself on your Umbrel, install the Traefik Manager app instead.
+
+
+  🔧 Required setup:
+
+    - Needs umbrelOS 2.0 or later, for the API key setting.
+    - In your Traefik Manager, open Settings, Agents, add an agent and copy the API key it shows. Then open this app's settings in umbrelOS and paste the key into TMA_API_KEY. The agent keeps restarting until the key is set.
+    - Add the agent in Traefik Manager with the URL http://umbrel.local:4490, or your Umbrel's IP address and port 4490.
+    - umbrelOS already uses ports 80 and 443, so this Traefik listens on 43080 for HTTP and 43443 for HTTPS. On your router, forward external port 80 to 43080 and external port 443 to 43443 on your Umbrel.
+    - Point your domain's DNS records at your public IP address. Let's Encrypt uses the HTTP challenge, which only works once port 80 is forwarded as above.
+    - To expose another Umbrel app, route to its container, for example http://immich_server_1:2283, using the APP_HOST and APP_PORT values from that app's docker-compose.yml. Apps that use host networking are reached at http://host.docker.internal followed by their port.
+
+
+  Opening the app from the Umbrel dashboard only shows the agent's health status.
+
+
+  Full setup guide: https://github.com/chr0nzz/tm-UmbrelOS
+developer: chr0nzz
+website: https://traefik-manager.xyzlab.dev
+submitter: chr0nzz
+submission: https://github.com/chr0nzz/tm-UmbrelOS
+repo: https://github.com/chr0nzz/traefik-manager
+support: https://github.com/chr0nzz/traefik-manager/issues
+gallery:
+  - https://raw.githubusercontent.com/chr0nzz/traefik-manager/main/docs/public/images/light-dashboard.png
+  - https://raw.githubusercontent.com/chr0nzz/traefik-manager/main/docs/public/images/light-routes-cards.png
+  - https://raw.githubusercontent.com/chr0nzz/traefik-manager/main/docs/public/images/light-route-map.png
+releaseNotes: >-
+  First release in the Traefik Manager community app store: the Traefik Manager agent 1.14.2 with Traefik 3.7.13.
+dependencies: []
+path: "/health"
+defaultUsername: ""
+defaultPassword: ""
+storage:
+  dataRoot: data
+environment:
+  - name: TMA_API_KEY
+    services:
+      - agent
+    note: The API key Traefik Manager shows when you add this agent under Settings, Agents. The agent does not start until this is set.

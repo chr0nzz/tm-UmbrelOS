@@ -1,0 +1,48 @@
+manifestVersion: "1.0.0"
+id: tm-traefik-manager
+name: Traefik Manager
+tagline: Manage Traefik routes, middlewares and certificates from a web UI
+icon: https://raw.githubusercontent.com/chr0nzz/tm-UmbrelOS/main/icon.png
+category: networking
+version: "1.14.2"
+port: 4480
+description: >-
+  ⚠️ This app needs extra setup outside umbrelOS before anything can reach it from the internet. Read the required setup below before installing.
+
+
+  Traefik Manager is a web UI for the Traefik reverse proxy: routes, middlewares, services, plugins, certificates and logs, without editing YAML by hand. This app installs Traefik Manager together with its own Traefik.
+
+
+  🔧 Required setup:
+
+    - umbrelOS already uses ports 80 and 443, so this Traefik listens on 42080 for HTTP and 42443 for HTTPS. On your router, forward external port 80 to 42080 and external port 443 to 42443 on your Umbrel. Without this, nothing outside your network can reach it.
+    - Point your domain's DNS records at your public IP address.
+    - Certificates come from Let's Encrypt with the HTTP challenge, which only works once port 80 is forwarded as above.
+    - To expose another Umbrel app, route to its container, for example http://immich_server_1:2283. Use the APP_HOST and APP_PORT values from that app's docker-compose.yml.
+    - Apps that use host networking, such as Home Assistant or Plex, are reached at http://host.docker.internal followed by their port, for example http://host.docker.internal:8123.
+    - The first time you open the app, the setup wizard asks you to create a Traefik Manager login.
+
+
+  This Traefik runs next to the reverse proxy built into umbrelOS and does not replace it. umbrelOS keeps serving its own dashboard and apps on ports 80 and 443.
+
+
+  Full setup guide: https://github.com/chr0nzz/tm-UmbrelOS
+developer: chr0nzz
+website: https://traefik-manager.xyzlab.dev
+submitter: chr0nzz
+submission: https://github.com/chr0nzz/tm-UmbrelOS
+repo: https://github.com/chr0nzz/traefik-manager
+support: https://github.com/chr0nzz/traefik-manager/issues
+gallery:
+  - https://raw.githubusercontent.com/chr0nzz/traefik-manager/main/docs/public/images/light-dashboard.png
+  - https://raw.githubusercontent.com/chr0nzz/traefik-manager/main/docs/public/images/light-routes-cards.png
+  - https://raw.githubusercontent.com/chr0nzz/traefik-manager/main/docs/public/images/light-routes-add-http.png
+  - https://raw.githubusercontent.com/chr0nzz/traefik-manager/main/docs/public/images/light-route-map.png
+releaseNotes: >-
+  First release in the Traefik Manager community app store: Traefik Manager 1.14.2 with Traefik 3.7.13.
+dependencies: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+storage:
+  dataRoot: data
