@@ -1,0 +1,81 @@
+name: Bump to the latest Traefik Manager release
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: bump-version
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+
+      - name: Read the latest release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh release view -R chr0nzz/traefik-manager --json tagName -q .tagName)
+          case "$tag" in
+            v[0-9]*.[0-9]*.[0-9]*) ;;
+            *) echo "Unexpected tag: $tag" >&2; exit 1 ;;
+          esac
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Update both manifests
+        id: bump
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          python3 - <<'PY'
+          import os, re, pathlib
+
+          tag, version = os.environ["TAG"], os.environ["VERSION"]
+          url = f"https://github.com/chr0nzz/traefik-manager/releases/tag/{tag}"
+          apps = {
+              "tm-traefik-manager": "Traefik Manager",
+              "tm-traefik-manager-agent": "the Traefik Manager agent",
+          }
+          changed = False
+          for app, label in apps.items():
+              path = pathlib.Path(app, "umbrel-app.yml")
+              text = path.read_text()
+              current = re.search(r'^version: "([^"]+)"$', text, re.M).group(1)
+              if current == version:
+                  continue
+              text = re.sub(r'^version: "[^"]+"$', f'version: "{version}"', text, count=1, flags=re.M)
+              notes = f"releaseNotes: >-\n  Updates {label} to {version}. Full release notes: {url}\n"
+              text, n = re.subn(r"^releaseNotes:.*\n(?:[ \t]+.*\n|\n(?=[ \t]))*", notes, text, count=1, flags=re.M)
+              if n != 1:
+                  raise SystemExit(f"{path}: releaseNotes not found")
+              path.write_text(text)
+              changed = True
+              print(f"{app}: {current} -> {version}")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"changed={'true' if changed else 'false'}\n")
+          PY
+
+      - name: Commit and push
+        if: steps.bump.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "chore: bump both apps to Traefik Manager $VERSION" \
+              tm-traefik-manager/umbrel-app.yml tm-traefik-manager-agent/umbrel-app.yml
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main

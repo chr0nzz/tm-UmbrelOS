@@ -99,7 +99,7 @@ Problems or questions: open an issue on the [Traefik Manager tracker](https://gi
 
 ## Versions
 
-Both apps use the `latest` Traefik Manager, agent and Traefik images. umbrelOS pulls images when an app is installed or updated, so an install picks up the newest release at that time.
+Both apps use the `latest` Traefik Manager, agent and Traefik images. umbrelOS pulls images when an app is installed or updated, so an install picks up the newest release at that time. A workflow checks for a new Traefik Manager release every six hours and bumps both apps, so installed apps get an update in the umbrelOS App Store.
 
 ## License
 
