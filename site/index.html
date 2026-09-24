@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Traefik Manager for umbrelOS</title>
+<meta name="description" content="A community app store for umbrelOS with Traefik Manager and the Traefik Manager agent.">
+<link rel="icon" href="https://raw.githubusercontent.com/chr0nzz/tm-UmbrelOS/main/icon.png">
+<style>
+  :root { --bg:#0d1117; --panel:#161b22; --border:#30363d; --text:#e6edf3; --muted:#8b949e; --blue:#58a6ff; --warn:#d29922; }
+  @media (prefers-color-scheme: light) { :root { --bg:#ffffff; --panel:#f6f8fa; --border:#d0d7de; --text:#1f2328; --muted:#59636e; --blue:#0969da; --warn:#9a6700; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 48px 20px 64px; }
+  header { display:flex; gap:16px; align-items:center; margin-bottom: 24px; }
+  header img { width:64px; height:64px; border-radius:14px; }
+  h1 { margin:0; font-size: 1.7rem; }
+  h2 { font-size: 1.15rem; margin: 36px 0 12px; }
+  p.lead { color:var(--muted); margin:4px 0 0; }
+  .warn { border:1px solid var(--warn); border-left-width:4px; background:var(--panel); padding:14px 16px; border-radius:8px; }
+  .warn strong { color:var(--warn); }
+  ol { padding-left: 20px; }
+  code { background:var(--panel); border:1px solid var(--border); padding:1px 6px; border-radius:6px; font-size:.9em; }
+  .copy { display:flex; gap:8px; margin: 10px 0; }
+  .copy code { flex:1; padding:8px 10px; overflow-x:auto; white-space:nowrap; }
+  button { background:var(--blue); color:#fff; border:0; border-radius:6px; padding:0 14px; font:inherit; cursor:pointer; }
+  table { width:100%; border-collapse: collapse; margin: 8px 0; font-size: .95rem; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--border); vertical-align: top; }
+  th { color:var(--muted); font-weight:600; }
+  a { color:var(--blue); }
+  footer { margin-top: 48px; color:var(--muted); font-size:.9rem; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="https://raw.githubusercontent.com/chr0nzz/tm-UmbrelOS/main/icon.png" alt="">
+    <div>
+      <h1>Traefik Manager for umbrelOS</h1>
+      <p class="lead">A community app store with Traefik Manager and the Traefik Manager agent.</p>
+    </div>
+  </header>
+
+  <div class="warn">
+    <strong>Setup is needed outside umbrelOS.</strong>
+    umbrelOS keeps ports 80 and 443 for itself, so the Traefik in these apps listens on other ports.
+    Nothing outside your network reaches it until you forward ports on your router.
+    Read the <a href="https://github.com/chr0nzz/tm-UmbrelOS#required-setup">required setup</a> before installing.
+  </div>
+
+  <h2>Add the app store</h2>
+  <ol>
+    <li>In umbrelOS, open the <strong>App Store</strong>.</li>
+    <li>Open the menu in the top right corner and choose <strong>Community App Stores</strong>.</li>
+    <li>Paste this address and click <strong>Add</strong>:
+      <div class="copy"><code id="url">https://github.com/chr0nzz/tm-UmbrelOS</code><button type="button" onclick="navigator.clipboard.writeText(document.getElementById('url').textContent);this.textContent='Copied'">Copy</button></div>
+    </li>
+    <li>Open <strong>Traefik Manager App Store</strong> and install the app you want.</li>
+  </ol>
+
+  <h2>Which app?</h2>
+  <table>
+    <tr><th>App</th><th>Installs</th><th>Use it when</th></tr>
+    <tr><td><strong>Traefik Manager</strong></td><td>Traefik Manager and its own Traefik</td><td>You want the whole thing on your Umbrel</td></tr>
+    <tr><td><strong>Traefik Manager Agent</strong></td><td>The agent and its own Traefik</td><td>Your Traefik Manager runs on another machine. Needs umbrelOS 2.0 or later</td></tr>
+  </table>
+
+  <h2>Forward these ports on your router</h2>
+  <table>
+    <tr><th>App</th><th>External 80 to</th><th>External 443 to</th></tr>
+    <tr><td>Traefik Manager</td><td><code>42080</code></td><td><code>42443</code></td></tr>
+    <tr><td>Traefik Manager Agent</td><td><code>43080</code></td><td><code>43443</code></td></tr>
+  </table>
+  <p>Then point your domain's DNS at your public IP. Routes to other Umbrel apps go to their container, for example <code>http://immich_server_1:2283</code>.</p>
+
+  <p><a href="https://github.com/chr0nzz/tm-UmbrelOS">Full setup guide</a> · <a href="https://traefik-manager.xyzlab.dev/umbrel.html">Traefik Manager docs</a> · <a href="https://discord.gg/vRQCMrrjtz">Discord</a></p>
+
+  <footer>Traefik Manager is GPL-3.0. Not affiliated with Umbrel.</footer>
+</main>
+</body>
+</html>
