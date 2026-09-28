@@ -71,7 +71,7 @@ If a `host.docker.internal` route times out, a firewall on your Umbrel is blocki
 
 | Path | Holds |
 |---|---|
-| `traefik/traefik.yml` | Traefik's static config, editable in Traefik Manager |
+| `traefik/static/traefik.yml` | Traefik's static config, editable in Traefik Manager |
 | `traefik/dynamic/` | Your routes, middlewares and services |
 | `traefik/acme/` | Certificates |
 | `tm/config/` | Traefik Manager's settings and login |

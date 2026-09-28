@@ -11,7 +11,7 @@ services:
     environment:
       TRAEFIK_API_URL: http://tm-traefik-manager_traefik_1:8080
       CONFIG_DIR: /app/dynamic
-      STATIC_CONFIG_PATH: /app/traefik.yml
+      STATIC_CONFIG_PATH: /app/static/traefik.yml
       ACME_JSON_PATH: /app/acme/acme.json
       ACCESS_LOG_PATH: /app/logs/access.log
       RESTART_METHOD: poison-pill
@@ -22,7 +22,7 @@ services:
       - ${APP_DATA_DIR}/data/tm/config:/app/config
       - ${APP_DATA_DIR}/data/tm/backups:/app/backups
       - ${APP_DATA_DIR}/data/traefik/dynamic:/app/dynamic
-      - ${APP_DATA_DIR}/data/traefik/traefik.yml:/app/traefik.yml
+      - ${APP_DATA_DIR}/data/traefik/static:/app/static
       - ${APP_DATA_DIR}/data/traefik/acme:/app/acme
       - ${APP_DATA_DIR}/data/traefik/logs:/app/logs:ro
       - ${APP_DATA_DIR}/data/signals:/signals
@@ -30,6 +30,7 @@ services:
   traefik:
     image: traefik:latest
     restart: unless-stopped
+    command: --configFile=/etc/traefik/static/traefik.yml
     extra_hosts:
       - host.docker.internal:host-gateway
     ports:
@@ -41,7 +42,7 @@ services:
       timeout: 3s
       retries: 1
     volumes:
-      - ${APP_DATA_DIR}/data/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ${APP_DATA_DIR}/data/traefik/static:/etc/traefik/static:ro
       - ${APP_DATA_DIR}/data/traefik/dynamic:/etc/traefik/dynamic:ro
       - ${APP_DATA_DIR}/data/traefik/acme:/etc/traefik/acme
       - ${APP_DATA_DIR}/data/traefik/logs:/var/log/traefik
