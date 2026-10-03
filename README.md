@@ -10,7 +10,7 @@ A community app store for [umbrelOS](https://umbrel.com) with two apps:
 | **Traefik Manager Agent** | The Traefik Manager agent and its own Traefik | You already run Traefik Manager on another machine and want it to manage a Traefik on your Umbrel. Needs umbrelOS 2.0 or later |
 
 > [!WARNING]
-> **Both apps need setup outside umbrelOS.** umbrelOS keeps ports 80 and 443 for itself, so the Traefik in these apps listens on other ports, and nothing outside your network reaches it until you forward ports on your router. Read [Required setup](#required-setup) before you install.
+> **Both apps need setup outside umbrelOS.** umbrelOS keeps ports 80 and 443 for itself, so the Traefik in these apps listens on other ports, and nothing outside your network reaches it until you forward ports on your router. Read [Required setup](#required-setup) before you install. Behind CGNAT, or for your own network only, see [Local network only or behind CGNAT](#local-network-only-or-behind-cgnat).
 
 ## Add the app store
 
@@ -62,6 +62,18 @@ If a `host.docker.internal` route times out, a firewall on your Umbrel is blocki
 
 > [!IMPORTANT]
 > A route you publish through this Traefik is **not** behind the Umbrel login. Protect anything sensitive with the app's own login or with an authentication middleware in Traefik Manager.
+
+## Local network only or behind CGNAT
+
+Behind CGNAT nothing from the internet can reach your Umbrel, so port forwarding and the Let's Encrypt HTTP challenge cannot work. The same goes when you only want your apps on your own network. Let something else hold the certificate and send plain http to this Traefik:
+
+- **Behind a reverse proxy you already run.** Point it at `http://<umbrel-ip>:43080` for the agent app, or `42080` for the Traefik Manager app, and keep the certificate there. A local DNS rewrite (AdGuard Home, Pi-hole) sends your domain to that proxy.
+- **Through a tunnel**, such as Cloudflare Tunnel. It takes the HTTPS connection and passes plain http on to `http://<umbrel-ip>:43080` (or `42080`).
+
+Either way, create the route with Cert Resolver set to **No TLS** and only the `web` entry point.
+
+> [!WARNING]
+> A route with TLS only matches HTTPS connections, so plain http on `web` gets `404 page not found`, even when `web` is listed on the route. The route form in Traefik Manager warns when TLS is on and `web` is selected.
 
 ## Traefik Manager app
 
