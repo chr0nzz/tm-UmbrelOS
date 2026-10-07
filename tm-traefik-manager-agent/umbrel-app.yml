@@ -4,7 +4,7 @@ name: Traefik Manager Agent
 tagline: Let a Traefik Manager on another machine manage a Traefik on your Umbrel
 icon: https://raw.githubusercontent.com/chr0nzz/tm-UmbrelOS/main/icon.png
 category: networking
-version: "1.15.0"
+version: "1.15.1"
 port: 4490
 description: >-
   ⚠️ This app has no web interface of its own and does nothing until you connect it to a Traefik Manager running on another machine. It also needs extra setup outside umbrelOS. Read the required setup below before installing.
@@ -38,7 +38,7 @@ gallery:
   - https://raw.githubusercontent.com/chr0nzz/traefik-manager/main/docs/public/images/light-routes-cards.png
   - https://raw.githubusercontent.com/chr0nzz/traefik-manager/main/docs/public/images/light-route-map.png
 releaseNotes: >-
-  Updates the Traefik Manager agent to 1.15.0. Full release notes: https://github.com/chr0nzz/traefik-manager/releases/tag/v1.15.0
+  Updates the Traefik Manager agent to 1.15.1. Full release notes: https://github.com/chr0nzz/traefik-manager/releases/tag/v1.15.1
 dependencies: []
 path: "/health"
 defaultUsername: ""

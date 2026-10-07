@@ -4,7 +4,7 @@ name: Traefik Manager
 tagline: Manage Traefik routes, middlewares and certificates from a web UI
 icon: https://raw.githubusercontent.com/chr0nzz/tm-UmbrelOS/main/icon.png
 category: networking
-version: "1.15.0"
+version: "1.15.1"
 port: 4480
 description: >-
   ⚠️ This app needs extra setup outside umbrelOS before anything can reach it from the internet. Read the required setup below before installing.
@@ -39,7 +39,7 @@ gallery:
   - https://raw.githubusercontent.com/chr0nzz/traefik-manager/main/docs/public/images/light-routes-add-http.png
   - https://raw.githubusercontent.com/chr0nzz/traefik-manager/main/docs/public/images/light-route-map.png
 releaseNotes: >-
-  Updates Traefik Manager to 1.15.0. Full release notes: https://github.com/chr0nzz/traefik-manager/releases/tag/v1.15.0
+  Updates Traefik Manager to 1.15.1. Full release notes: https://github.com/chr0nzz/traefik-manager/releases/tag/v1.15.1
 dependencies: []
 path: ""
 defaultUsername: ""
