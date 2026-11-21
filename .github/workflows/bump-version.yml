@@ -54,7 +54,7 @@ jobs:
               path = pathlib.Path(app, "umbrel-app.yml")
               text = path.read_text()
               current = re.search(r'^version: "([^"]+)"$', text, re.M).group(1)
-              if current == version:
+              if current == version or re.fullmatch(re.escape(version) + r"-\d+", current):
                   continue
               text = re.sub(r'^version: "[^"]+"$', f'version: "{version}"', text, count=1, flags=re.M)
               notes = f"releaseNotes: >-\n  Updates {label} to {version}. Full release notes: {url}\n"
